@@ -1,0 +1,142 @@
+name: iPhone check
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: iphone-check
+  cancel-in-progress: true
+
+jobs:
+  ios:
+    name: Build and launch iPhone app
+    runs-on: macos-26
+    timeout-minutes: 45
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.4.app/Contents/Developer
+
+    steps:
+      - name: Download project
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Set up Android SDK for Gradle configuration
+        uses: android-actions/setup-android@v3
+        with:
+          packages: "platform-tools platforms;android-36 build-tools;36.0.0"
+
+      - name: Show build tools
+        run: |
+          test -f settings.gradle.kts
+          test -f shared/build.gradle.kts
+          test -f iosApp/iosApp.xcodeproj/project.pbxproj
+          java -version
+          xcodebuild -version
+          mkdir -p build/ios-check
+
+      - name: Build app for iPhone Simulator
+        shell: bash
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project iosApp/iosApp.xcodeproj \
+            -scheme Proekt \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath build/ios \
+            CODE_SIGNING_ALLOWED=NO \
+            build 2>&1 | tee build/ios-check/build.log
+
+      - name: Choose an iPhone Simulator
+        shell: bash
+        run: |
+          python3 <<'PY'
+          import json
+          import os
+          import subprocess
+
+          devices = json.loads(subprocess.check_output(
+              ["xcrun", "simctl", "list", "devices", "available", "--json"],
+              text=True
+          ))["devices"]
+          chosen = None
+          for runtime, items in devices.items():
+              if "iOS-26-4" not in runtime:
+                  continue
+              for device in items:
+                  if device["name"].startswith("iPhone"):
+                      chosen = device
+                      break
+              if chosen:
+                  break
+          if chosen is None:
+              raise SystemExit("No available iOS 26.4 iPhone Simulator found.")
+          with open(os.environ["GITHUB_ENV"], "a") as environment:
+              environment.write("SIM_ID=" + chosen["udid"] + "\n")
+          print("Selected", chosen["name"], chosen["udid"])
+          PY
+
+      - name: Launch app and capture its screen
+        shell: bash
+        run: |
+          set -e
+          xcrun simctl boot "$SIM_ID" || xcrun simctl bootstatus "$SIM_ID" -b
+          xcrun simctl bootstatus "$SIM_ID" -b
+          xcrun simctl install "$SIM_ID" build/ios/Build/Products/Debug-iphonesimulator/Proekt.app
+          xcrun simctl launch "$SIM_ID" com.example.proekt
+          sleep 8
+          python3 <<'PY'
+          import os
+          import subprocess
+
+          processes = subprocess.check_output(
+              ["xcrun", "simctl", "spawn", os.environ["SIM_ID"], "launchctl", "list"],
+              text=True
+          )
+          running = False
+          for line in processes.splitlines():
+              columns = line.split()
+              if len(columns) >= 3 and "com.example.proekt" in columns[-1]:
+                  if columns[0].isdigit():
+                      running = True
+          if not running:
+              raise SystemExit("The app process is not running after launch.")
+          PY
+          xcrun simctl io "$SIM_ID" screenshot build/ios-check/iPhone-home.png
+          echo "The app built and launched in the iPhone Simulator." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Test shared logic on iOS
+        shell: bash
+        run: |
+          set -o pipefail
+          /bin/sh ./gradlew :shared:iosSimulatorArm64Test --stacktrace 2>&1 | tee build/ios-check/tests.log
+
+      - name: Collect simulator crash reports
+        if: failure()
+        shell: bash
+        run: |
+          mkdir -p build/ios-check/crashes
+          find "$HOME/Library/Logs/DiagnosticReports" -maxdepth 1 -name 'Proekt*' \
+            -exec cp {} build/ios-check/crashes/ \; 2>/dev/null || true
+
+      - name: Save logs and screenshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: iPhone-check-results
+          path: |
+            build/ios-check/
+            shared/build/reports/tests/
+            shared/build/test-results/
+          if-no-files-found: warn
+          retention-days: 3
+
