@@ -13,7 +13,12 @@ struct ProektApp: App {
 
 struct MusicView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
-        MainViewControllerKt.MainViewController()
+        #if DEBUG
+        let screenshots = ProcessInfo.processInfo.arguments.contains("--screenshots")
+        #else
+        let screenshots = false
+        #endif
+        return MainViewControllerKt.MainViewController(screenshotMode: screenshots)
     }
 
     func updateUIViewController(_ controller: UIViewController, context: Context) {

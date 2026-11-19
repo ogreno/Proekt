@@ -9,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -69,7 +70,7 @@ fun MusicApp(
                     }, maxLines = 1) },
                     navigationIcon = {
                         if (screen != "home") {
-                            TextButton(onClick = { goBack() }) { Text("Назад") }
+                            TextButton(onClick = { goBack() }, modifier = Modifier.testTag("go-back")) { Text("Назад") }
                         }
                     }
                 )
@@ -82,7 +83,7 @@ fun MusicApp(
                             Modifier.fillMaxWidth().navigationBarsPadding().padding(horizontal = 8.dp),
                             verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
                         ) {
-                            TextButton(onClick = { showPlayer() }, modifier = Modifier.weight(1f)) {
+                            TextButton(onClick = { showPlayer() }, modifier = Modifier.weight(1f).testTag("open-player")) {
                                 Column(Modifier.fillMaxWidth()) {
                                     Text(track.title, maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis)
                                     Text(
@@ -143,9 +144,9 @@ private fun HomeScreen(navigate: (String) -> Unit) {
         Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp, androidx.compose.ui.Alignment.CenterVertically)
     ) {
-        Button(onClick = { navigate("tracks") }, modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp)) { Text("Все треки") }
-        Button(onClick = { navigate("favorites") }, modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp)) { Text("Избранное") }
-        Button(onClick = { navigate("playlists") }, modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp)) { Text("Мои плейлисты") }
+        Button(onClick = { navigate("tracks") }, modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp).testTag("home-tracks")) { Text("Все треки") }
+        Button(onClick = { navigate("favorites") }, modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp).testTag("home-favorites")) { Text("Избранное") }
+        Button(onClick = { navigate("playlists") }, modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp).testTag("home-playlists")) { Text("Мои плейлисты") }
     }
 }
 

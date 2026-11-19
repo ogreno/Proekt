@@ -8,6 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlin.time.Clock
@@ -20,14 +21,14 @@ internal fun PlaylistsScreen(data: Library, library: LibraryController, open: (I
     var deleteId by rememberSaveable { mutableStateOf<Int?>(null) }
     val shown = data.playlists.filter { it.name.contains(query.trim(), ignoreCase = true) }
     Column(Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
-        Button(onClick = { showCreate = true }, modifier = Modifier.fillMaxWidth()) { Text("Создать плейлист") }
+        Button(onClick = { showCreate = true }, modifier = Modifier.fillMaxWidth().testTag("create-playlist")) { Text("Создать плейлист") }
         SearchField(query, { query = it }, "Название плейлиста")
         LazyColumn(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(6.dp), contentPadding = PaddingValues(vertical = 8.dp)) {
             if (shown.isEmpty()) item { Text(if (query.isBlank()) "Нет плейлистов" else "Ничего не найдено") }
             items(shown, key = { it.id }) { playlist ->
                 Card {
                     Row(Modifier.fillMaxWidth(), verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
-                        Column(Modifier.weight(1f).clickable { open(playlist.id) }.padding(16.dp)) {
+                        Column(Modifier.weight(1f).clickable { open(playlist.id) }.testTag("playlist-${playlist.id}").padding(16.dp)) {
                             Text(playlist.name, maxLines = 2, overflow = TextOverflow.Ellipsis)
                             Text("Треков · ${playlist.trackIds.size}", style = MaterialTheme.typography.bodySmall)
                         }
@@ -79,7 +80,7 @@ internal fun PlaylistScreen(
     Column(Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
         FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Button(enabled = tracks.isNotEmpty(), onClick = { onPlay(tracks, tracks.first().id) }) { Text("Слушать") }
-            OutlinedButton(onClick = { showAdd = true }) { Text("Добавить трек") }
+            OutlinedButton(onClick = { showAdd = true }, modifier = Modifier.testTag("add-playlist-track")) { Text("Добавить трек") }
         }
         SearchField(query, { query = it }, "Название или исполнитель")
         TrackRows(

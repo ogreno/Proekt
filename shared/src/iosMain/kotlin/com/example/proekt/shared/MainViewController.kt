@@ -17,9 +17,9 @@ actual fun PlatformBackHandler(enabled: Boolean, onBack: () -> Unit) {
     // The common top bar provides the Back button on iPhone.
 }
 
-private object IosMusic : PlaybackHost {
+private class IosMusic(screenshotMode: Boolean) : PlaybackHost {
     val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
-    val storage = IosStorage()
+    val storage = IosStorage(screenshotMode)
     val importer = IosAudioImporter(storage, scope)
     val library = LibraryController(storage, importer, scope)
     val engine = IosAudioEngine(storage)
@@ -91,8 +91,11 @@ private object IosMusic : PlaybackHost {
     override fun nowMs(): Long = (NSDate().timeIntervalSince1970 * 1000).toLong()
 }
 
-fun MainViewController(): UIViewController {
-    val music = IosMusic
+private var musicInstance: IosMusic? = null
+
+fun MainViewController(screenshotMode: Boolean): UIViewController {
+    if (musicInstance == null) musicInstance = IosMusic(screenshotMode)
+    val music = requireNotNull(musicInstance)
     val controller = ComposeUIViewController {
         MusicApp(music.library, music.player)
     }

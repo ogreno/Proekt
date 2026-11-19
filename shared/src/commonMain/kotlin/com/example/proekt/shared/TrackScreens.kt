@@ -9,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
@@ -18,9 +19,9 @@ internal fun SearchField(query: String, change: (String) -> Unit, label: String)
         value = query, onValueChange = change,
         label = { Text(label) }, singleLine = true,
         trailingIcon = {
-            if (query.isNotEmpty()) TextButton(onClick = { change("") }) { Text("×") }
+            if (query.isNotEmpty()) TextButton(onClick = { change("") }, modifier = Modifier.testTag("clear-search")) { Text("×") }
         },
-        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
+        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp).testTag("search")
     )
 }
 
@@ -44,7 +45,7 @@ internal fun TrackRows(
                     }
                     Text(if (track.durationMs > 0) formatTime(track.durationMs) else "—", style = MaterialTheme.typography.labelMedium)
                     Box {
-                        TextButton(onClick = { expanded = true }, contentPadding = PaddingValues(0.dp), modifier = Modifier.width(48.dp)) { Text("⋮") }
+                        TextButton(onClick = { expanded = true }, contentPadding = PaddingValues(0.dp), modifier = Modifier.width(48.dp).testTag("track-menu-${track.id}")) { Text("⋮") }
                         DropdownMenu(expanded, onDismissRequest = { expanded = false }) {
                             actions(track) { expanded = false }
                         }
@@ -97,7 +98,7 @@ internal fun TracksScreen(
             play = { onPlay(tracks, it.id) }
         ) { track, close ->
             QueueActions(track, player, close)
-            DropdownMenuItem(text = { Text("Изменить название и исполнителя") }, onClick = {
+            DropdownMenuItem(text = { Text("Изменить название и исполнителя") }, modifier = Modifier.testTag("edit-track"), onClick = {
                 close()
                 title = track.title
                 artist = track.artist

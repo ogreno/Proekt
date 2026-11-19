@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -125,8 +126,8 @@ private fun PlayerControls(player: PlayerController, state: PlaybackState, open:
                 ) { Text("След.") }
             }
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-                TextButton(onClick = { open("queue") }) { Text("Очередь") }
-                TextButton(onClick = { open("timer") }) { Text("Таймер сна") }
+                TextButton(onClick = { open("queue") }, modifier = Modifier.testTag("open-queue")) { Text("Очередь") }
+                TextButton(onClick = { open("timer") }, modifier = Modifier.testTag("open-timer")) { Text("Таймер сна") }
             }
         }
     }

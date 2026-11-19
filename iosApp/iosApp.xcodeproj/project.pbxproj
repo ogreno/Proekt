@@ -4,6 +4,103 @@
     classes = {};
     objectVersion = 56;
     objects = {
+        200000000000000000000001 = {
+            isa = PBXNativeTarget;
+            buildConfigurationList = 200000000000000000000002;
+            buildPhases = (200000000000000000000007, 200000000000000000000008, 200000000000000000000009);
+            buildRules = ();
+            dependencies = (20000000000000000000000B);
+            name = ProektScreenshots;
+            productName = ProektScreenshots;
+            productReference = 200000000000000000000003;
+            productType = "com.apple.product-type.bundle.ui-testing";
+        };
+        200000000000000000000002 = {
+            isa = XCConfigurationList;
+            buildConfigurations = (20000000000000000000000C, 20000000000000000000000D);
+            defaultConfigurationIsVisible = 0;
+            defaultConfigurationName = Release;
+        };
+        200000000000000000000003 = {
+            isa = PBXFileReference;
+            explicitFileType = wrapper.cfbundle;
+            includeInIndex = 0;
+            path = ProektScreenshots.xctest;
+            sourceTree = BUILT_PRODUCTS_DIR;
+        };
+        200000000000000000000004 = {
+            isa = PBXGroup;
+            children = (200000000000000000000005);
+            path = ProektScreenshots;
+            sourceTree = "<group>";
+        };
+        200000000000000000000005 = {
+            isa = PBXFileReference;
+            lastKnownFileType = sourcecode.swift;
+            path = ScreenTour.swift;
+            sourceTree = "<group>";
+        };
+        200000000000000000000006 = {
+            isa = PBXBuildFile;
+            fileRef = 200000000000000000000005;
+        };
+        200000000000000000000007 = {
+            isa = PBXSourcesBuildPhase;
+            buildActionMask = 2147483647;
+            files = (200000000000000000000006);
+            runOnlyForDeploymentPostprocessing = 0;
+        };
+        200000000000000000000008 = {
+            isa = PBXFrameworksBuildPhase;
+            buildActionMask = 2147483647;
+            files = ();
+            runOnlyForDeploymentPostprocessing = 0;
+        };
+        200000000000000000000009 = {
+            isa = PBXResourcesBuildPhase;
+            buildActionMask = 2147483647;
+            files = ();
+            runOnlyForDeploymentPostprocessing = 0;
+        };
+        20000000000000000000000A = {
+            isa = PBXContainerItemProxy;
+            containerPortal = 100000000000000000000001;
+            proxyType = 1;
+            remoteGlobalIDString = 100000000000000000000002;
+            remoteInfo = Proekt;
+        };
+        20000000000000000000000B = {
+            isa = PBXTargetDependency;
+            target = 100000000000000000000002;
+            targetProxy = 20000000000000000000000A;
+        };
+        20000000000000000000000C = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                CODE_SIGN_STYLE = Automatic;
+                GENERATE_INFOPLIST_FILE = YES;
+                PRODUCT_BUNDLE_IDENTIFIER = com.example.proekt.screenshots;
+                PRODUCT_NAME = "$(TARGET_NAME)";
+                SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+                TARGETED_DEVICE_FAMILY = 1;
+                TEST_TARGET_NAME = Proekt;
+                SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+            };
+            name = Debug;
+        };
+        20000000000000000000000D = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                CODE_SIGN_STYLE = Automatic;
+                GENERATE_INFOPLIST_FILE = YES;
+                PRODUCT_BUNDLE_IDENTIFIER = com.example.proekt.screenshots;
+                PRODUCT_NAME = "$(TARGET_NAME)";
+                SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+                TARGETED_DEVICE_FAMILY = 1;
+                TEST_TARGET_NAME = Proekt;
+            };
+            name = Release;
+        };
         100000000000000000000001 = {
             isa = PBXProject;
             attributes = {
@@ -21,7 +118,7 @@
             productRefGroup = 100000000000000000000005;
             projectDirPath = "";
             projectRoot = "";
-            targets = (100000000000000000000002);
+            targets = (100000000000000000000002, 200000000000000000000001);
         };
         100000000000000000000002 = {
             isa = PBXNativeTarget;
@@ -53,12 +150,12 @@
         };
         100000000000000000000004 = {
             isa = PBXGroup;
-            children = (10000000000000000000000C, 100000000000000000000005);
+            children = (10000000000000000000000C, 200000000000000000000004, 100000000000000000000005);
             sourceTree = "<group>";
         };
         100000000000000000000005 = {
             isa = PBXGroup;
-            children = (10000000000000000000000B);
+            children = (10000000000000000000000B, 200000000000000000000003);
             name = Products;
             sourceTree = "<group>";
         };
