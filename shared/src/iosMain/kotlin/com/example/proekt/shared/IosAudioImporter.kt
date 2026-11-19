@@ -5,7 +5,7 @@ package com.example.proekt.shared
 import kotlinx.cinterop.*
 import kotlinx.coroutines.*
 import platform.AVFoundation.*
-import platform.CommonCrypto.*
+import platform.CoreCrypto.*
 import platform.CoreMedia.CMTimeGetSeconds
 import platform.Foundation.*
 import platform.UIKit.*
