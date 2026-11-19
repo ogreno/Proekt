@@ -1,0 +1,185 @@
+// !$*UTF8*$!
+{
+    archiveVersion = 1;
+    classes = {};
+    objectVersion = 56;
+    objects = {
+        100000000000000000000001 = {
+            isa = PBXProject;
+            attributes = {
+                BuildIndependentTargetsInParallel = YES;
+                LastUpgradeCheck = 1640;
+                TargetAttributes = {
+                    100000000000000000000002 = { CreatedOnToolsVersion = 16.4; };
+                };
+            };
+            buildConfigurationList = 100000000000000000000003;
+            compatibilityVersion = "Xcode 14.0";
+            developmentRegion = en;
+            knownRegions = (en, Base);
+            mainGroup = 100000000000000000000004;
+            productRefGroup = 100000000000000000000005;
+            projectDirPath = "";
+            projectRoot = "";
+            targets = (100000000000000000000002);
+        };
+        100000000000000000000002 = {
+            isa = PBXNativeTarget;
+            buildConfigurationList = 100000000000000000000006;
+            buildPhases = (
+                100000000000000000000007,
+                100000000000000000000008,
+                100000000000000000000009,
+                10000000000000000000000A
+            );
+            buildRules = ();
+            dependencies = ();
+            name = Proekt;
+            productName = Proekt;
+            productReference = 10000000000000000000000B;
+            productType = "com.apple.product-type.application";
+        };
+        100000000000000000000003 = {
+            isa = XCConfigurationList;
+            buildConfigurations = (100000000000000000000010, 100000000000000000000011);
+            defaultConfigurationIsVisible = 0;
+            defaultConfigurationName = Release;
+        };
+        100000000000000000000006 = {
+            isa = XCConfigurationList;
+            buildConfigurations = (100000000000000000000012, 100000000000000000000013);
+            defaultConfigurationIsVisible = 0;
+            defaultConfigurationName = Release;
+        };
+        100000000000000000000004 = {
+            isa = PBXGroup;
+            children = (10000000000000000000000C, 100000000000000000000005);
+            sourceTree = "<group>";
+        };
+        100000000000000000000005 = {
+            isa = PBXGroup;
+            children = (10000000000000000000000B);
+            name = Products;
+            sourceTree = "<group>";
+        };
+        10000000000000000000000C = {
+            isa = PBXGroup;
+            children = (10000000000000000000000D, 10000000000000000000000E);
+            path = iosApp;
+            sourceTree = "<group>";
+        };
+        10000000000000000000000B = {
+            isa = PBXFileReference;
+            explicitFileType = wrapper.application;
+            includeInIndex = 0;
+            path = Proekt.app;
+            sourceTree = BUILT_PRODUCTS_DIR;
+        };
+        10000000000000000000000D = {
+            isa = PBXFileReference;
+            lastKnownFileType = sourcecode.swift;
+            path = ProektApp.swift;
+            sourceTree = "<group>";
+        };
+        10000000000000000000000E = {
+            isa = PBXFileReference;
+            lastKnownFileType = text.plist.xml;
+            path = Info.plist;
+            sourceTree = "<group>";
+        };
+        10000000000000000000000F = {
+            isa = PBXBuildFile;
+            fileRef = 10000000000000000000000D;
+        };
+        100000000000000000000007 = {
+            isa = PBXShellScriptBuildPhase;
+            alwaysOutOfDate = 1;
+            buildActionMask = 2147483647;
+            files = ();
+            inputPaths = ();
+            name = "Build Kotlin framework";
+            outputPaths = ();
+            runOnlyForDeploymentPostprocessing = 0;
+            shellPath = /bin/sh;
+            shellScript = "set -e\ncd \"$SRCROOT/..\"\n/bin/sh ./gradlew :shared:embedAndSignAppleFrameworkForXcode\n";
+        };
+        100000000000000000000008 = {
+            isa = PBXSourcesBuildPhase;
+            buildActionMask = 2147483647;
+            files = (10000000000000000000000F);
+            runOnlyForDeploymentPostprocessing = 0;
+        };
+        100000000000000000000009 = {
+            isa = PBXFrameworksBuildPhase;
+            buildActionMask = 2147483647;
+            files = ();
+            runOnlyForDeploymentPostprocessing = 0;
+        };
+        10000000000000000000000A = {
+            isa = PBXResourcesBuildPhase;
+            buildActionMask = 2147483647;
+            files = ();
+            runOnlyForDeploymentPostprocessing = 0;
+        };
+        100000000000000000000010 = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                CLANG_ENABLE_MODULES = YES;
+                IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+                SDKROOT = iphoneos;
+                SWIFT_VERSION = 5.0;
+                DEBUG_INFORMATION_FORMAT = dwarf;
+                SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+            };
+            name = Debug;
+        };
+        100000000000000000000011 = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                CLANG_ENABLE_MODULES = YES;
+                IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+                SDKROOT = iphoneos;
+                SWIFT_VERSION = 5.0;
+                DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+                SWIFT_COMPILATION_MODE = wholemodule;
+            };
+            name = Release;
+        };
+        100000000000000000000012 = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                CODE_SIGN_STYLE = Automatic;
+                ENABLE_USER_SCRIPT_SANDBOXING = NO;
+                FRAMEWORK_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)");
+                GENERATE_INFOPLIST_FILE = NO;
+                INFOPLIST_FILE = iosApp/Info.plist;
+                LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks");
+                OTHER_LDFLAGS = ("$(inherited)", "-ObjC", "-framework", Shared);
+                PRODUCT_BUNDLE_IDENTIFIER = com.example.proekt;
+                PRODUCT_NAME = "$(TARGET_NAME)";
+                SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+                TARGETED_DEVICE_FAMILY = 1;
+            };
+            name = Debug;
+        };
+        100000000000000000000013 = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                CODE_SIGN_STYLE = Automatic;
+                ENABLE_USER_SCRIPT_SANDBOXING = NO;
+                FRAMEWORK_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)");
+                GENERATE_INFOPLIST_FILE = NO;
+                INFOPLIST_FILE = iosApp/Info.plist;
+                LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks");
+                OTHER_LDFLAGS = ("$(inherited)", "-ObjC", "-framework", Shared);
+                PRODUCT_BUNDLE_IDENTIFIER = com.example.proekt;
+                PRODUCT_NAME = "$(TARGET_NAME)";
+                SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+                TARGETED_DEVICE_FAMILY = 1;
+            };
+            name = Release;
+        };
+    };
+    rootObject = 100000000000000000000001;
+}
+
